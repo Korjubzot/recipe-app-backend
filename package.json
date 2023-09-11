@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "prestart": "node scripts/create-database.js && npm run migrate",
-    "start": "nodemon index.js",
+    "start": "nodemon -r dotenv/config index.js",
+    "pretest": "node scripts/create-database.js test",
+    "test": "mocha tests/**/*.js --exit --recursive --timeout 60000 --file ./tests/test-setup.js",
+    "posttest": "node scripts/drop-database.js",
     "lint": "eslint .",
     "migrate": "node scripts/migrate.js"
   },
@@ -14,8 +17,11 @@
     "postgres-migrations": "5.3.0"
   },
   "devDependencies": {
-    "dotenv": "^16.0.3",
+    "chai": "^4.3.8",
+    "dotenv": "^16.3.1",
     "eslint": "^8.36.0",
-    "nodemon": "^2.0.21"
+    "mocha": "^10.2.0",
+    "nodemon": "^2.0.21",
+    "supertest": "^6.3.3"
   }
 }
