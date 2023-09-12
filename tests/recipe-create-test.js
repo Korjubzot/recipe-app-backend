@@ -11,6 +11,9 @@ describe("create recipe", () => {
           cuisine: "Texmex",
         });
 
+        console.log(res.status);
+        console.log(res.body);
+
         expect(res.status).to.equal(201);
       });
     });

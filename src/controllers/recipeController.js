@@ -7,21 +7,23 @@ const createRecipe = async (req, res) => {
     const {
       rows: [recipe],
     } = await db.query(
-      "INSERT INTO Recipes (name, cuisine) VALUES ($1, $2) RETURNING *",
+      "INSERT INTO recipes (name, cuisine) VALUES ($1, $2) RETURNING *",
       [name, cuisine]
     );
     res.status(201).json(recipe);
   } catch (err) {
-    res.status(500).json(err.message);
+    console.error("Error creating recipe:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
 const getRecipe = async (_, res) => {
   try {
-    const { rows } = await db.query("SELECT * FROM Recipes");
+    const { rows } = await db.query("SELECT * FROM recipes");
     res.status(200).json(rows);
   } catch (err) {
-    res.status(500).json(err.message);
+    console.error("Error fetching recipes:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
