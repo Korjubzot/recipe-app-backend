@@ -1,14 +1,14 @@
 const db = require("../../db/index");
 
 const createRecipe = async (req, res) => {
-  const { name, cuisine } = req.body;
+  const { name, cuisine, cooking_time, servings, ingredients, instructions } = req.body;
 
   try {
     const {
       rows: [recipe],
     } = await db.query(
-      "INSERT INTO recipes (name, cuisine) VALUES ($1, $2) RETURNING *",
-      [name, cuisine]
+      "INSERT INTO recipes (name, cuisine, cooking_time, servings, ingredients, instructions) VALUES ($1, $2, $3, $4, $5, $6) RETURNING * ",
+      [name, cuisine, cooking_time, servings, ingredients, instructions]
     );
     res.status(201).json(recipe);
   } catch (err) {

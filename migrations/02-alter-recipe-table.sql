@@ -1,4 +1,4 @@
-ALTER TABLE Recipes 
+ALTER TABLE Recipes
 ADD COLUMN steps TEXT,
 ADD COLUMN preperation_time INTEGER,
 ADD COLUMN cooking_time INTEGER,
