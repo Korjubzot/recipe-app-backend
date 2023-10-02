@@ -7,7 +7,7 @@ const createRecipe = async (req, res) => {
     const {
       rows: [recipe],
     } = await db.query(
-      "INSERT INTO recipes (name, cuisine, cooking_time, servings, instructions) VALUES ($1, $2, $3, $4, $5) RETURNING * ",
+      "INSERT INTO recipes (name, cuisine, cooking_time, servings, steps) VALUES ($1, $2, $3, $4, $5) RETURNING * ",
       [name, cuisine, cooking_time, servings, instructions]
     );
     res.status(201).json(recipe);
