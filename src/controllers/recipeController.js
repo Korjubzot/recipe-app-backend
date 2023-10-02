@@ -2,13 +2,13 @@ const db = require("../../db/index");
 const queries = require('../queries')
 
 const createRecipe = async (req, res) => {
-  const { name, cuisine, cooking_time, servings, instructions } = req.body;
+  const { name, cuisine, cooking_time, servings, ingredients, instructions } = req.body;
 
   try {
     const {
       rows: [recipe],
-    } = await db.query(queries.selectAllRecipes,
-      [name, cuisine, cooking_time, servings, instructions]
+    } = await db.query(queries.insertRecipe,
+      [name, cuisine, cooking_time, servings, ingredients, instructions]
     );
     res.status(201).json(recipe);
   } catch (err) {
@@ -33,12 +33,12 @@ const getRecipeById = async (req, res) => {
     const query = "SELECT * FROM recipes WHERE id = $1";
     const result = await db.query(query, [id]);
 
-    if (result.rows.length === 0) {
+    if (!result.rows.length) {
       return res.status(404).json({ error: "Recipe not found" });
     }
 
     const recipe = result.rows[0];
-    res.status(200).json(recipe);
+    res.status(200).json({ recipe });
 
   } catch (error) {
     console.error("Error retrieving recipe by ID:", error);
