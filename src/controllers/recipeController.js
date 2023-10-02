@@ -1,4 +1,5 @@
 const db = require("../../db/index");
+const queries = require('../queries')
 
 const createRecipe = async (req, res) => {
   const { name, cuisine, cooking_time, servings, instructions } = req.body;
@@ -6,8 +7,7 @@ const createRecipe = async (req, res) => {
   try {
     const {
       rows: [recipe],
-    } = await db.query(
-      "INSERT INTO recipes (name, cuisine, cooking_time, servings, steps) VALUES ($1, $2, $3, $4, $5) RETURNING * ",
+    } = await db.query(queries.selectAllRecipes,
       [name, cuisine, cooking_time, servings, instructions]
     );
     res.status(201).json(recipe);
@@ -27,4 +27,23 @@ const getRecipe = async (_, res) => {
   }
 };
 
-module.exports = { createRecipe, getRecipe };
+const getRecipeById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const query = "SELECT * FROM recipes WHERE id = $1";
+    const result = await db.query(query, [id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Recipe not found" });
+    }
+
+    const recipe = result.rows[0];
+    res.status(200).json(recipe);
+
+  } catch (error) {
+    console.error("Error retrieving recipe by ID:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+module.exports = { createRecipe, getRecipe, getRecipeById };
