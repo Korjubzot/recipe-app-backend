@@ -6,6 +6,7 @@ const {
   getRecipe,
   getRecipeById,
   deleteRecipeById,
+  patchRecipeById,
 } = require("../controllers/recipeController");
 
 router.post("/recipes", createRecipe);
@@ -15,5 +16,7 @@ router.get("/recipes", getRecipe);
 router.get("/recipes/:id", getRecipeById);
 
 router.delete("/recipes/:id", deleteRecipeById);
+
+router.patch("/recipes/:id", patchRecipeById);
 
 module.exports = router;
